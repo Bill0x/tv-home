@@ -1,0 +1,197 @@
+/* Sized in rem; 1rem = 20px on a 1920px-wide TV, scaled for previews. */
+:root {
+  --bg: #0b0f1a;
+  --bg2: #141a2a;
+  --panel: #1b2236;
+  --text: #f3f5fa;
+  --muted: #8f9bb8;
+  --accent: #f0a35e;
+  --focus: #ffffff;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { font-size: calc(100vw / 96); }
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 20% 0%, #24304f 0%, var(--bg) 60%) fixed, var(--bg);
+  color: var(--text);
+  font-family: "SamsungOne", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+button, input { font: inherit; color: inherit; }
+
+[data-nav] { outline: none; transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s; }
+[data-nav].focused, [data-nav]:focus { box-shadow: 0 0 0 0.25rem var(--focus); }
+
+/* ---------------------------------------------------------------- top bar */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.6rem 3rem 0;
+}
+/* The TV's engine (Chromium 69) has no flexbox `gap`, so spacing uses margins. */
+.tabs { display: flex; }
+.tabs > * + * { margin-left: 0.6rem; }
+.tab {
+  background: transparent;
+  border: 0;
+  border-radius: 2rem;
+  padding: 0.6rem 1.4rem;
+  font-size: 1.2rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+.tab.active { color: var(--text); background: rgba(255, 255, 255, 0.1); }
+.topclock { font-size: 1.4rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.page { flex: 1; min-height: 0; padding: 1.5rem 3rem 2rem; }
+.page[hidden] { display: none; }
+
+/* ---------------------------------------------------------------- home */
+
+#page-home { display: flex; flex-direction: column; }
+.hero { margin: 1rem 0 2.2rem; }
+.greeting { font-size: 1.6rem; color: var(--accent); letter-spacing: 0.02em; }
+.bigclock { font-size: 7.5rem; font-weight: 200; line-height: 1; margin: 0.3rem 0; font-variant-numeric: tabular-nums; }
+.date { font-size: 1.6rem; color: var(--muted); }
+.weather { font-size: 1.4rem; margin-top: 0.8rem; }
+
+.rowtitle { font-size: 1.1rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin: 0.6rem 0 0.8rem; }
+.tiles { display: flex; margin-bottom: 1.4rem; }
+.tiles > * + * { margin-left: 1.2rem; }
+.tile {
+  width: 13rem;
+  height: 7.4rem;
+  border: 0;
+  border-radius: 1rem;
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.tile.focused, .tile:focus { transform: scale(1.07); }
+.tile-name { font-size: 1.25rem; font-weight: 600; }
+.tile-icon { position: absolute; top: 0.9rem; left: 1.2rem; font-size: 1.8rem; }
+.tile-draw { background: linear-gradient(135deg, #7c3aed, #db2777); }
+.tile-ask { background: linear-gradient(135deg, #d97757, #b45309); }
+
+/* ---------------------------------------------------------------- draw */
+
+#page-draw { display: flex; flex-direction: column; }
+#page-draw > * + * { margin-top: 1rem; }
+.drawbar { display: flex; align-items: center; }
+.drawbar > * + * { margin-left: 1.4rem; }
+.swatches, .sizes { display: flex; }
+.swatches > * + *, .sizes > * + * { margin-left: 0.6rem; }
+.swatch {
+  width: 2.4rem; height: 2.4rem;
+  border-radius: 50%;
+  border: 0.18rem solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+}
+.swatch.selected { border-color: var(--text); transform: scale(1.15); }
+.size {
+  width: 2.6rem; height: 2.6rem;
+  border-radius: 0.6rem;
+  border: 0;
+  background: var(--panel);
+  cursor: pointer;
+}
+.size.selected { background: var(--accent); color: #1b1206; }
+.drawhint { margin-left: auto; color: var(--muted); font-size: 1.1rem; text-align: right; }
+.drawhint b { color: var(--text); }
+
+.btn {
+  border: 0;
+  border-radius: 0.7rem;
+  padding: 0.6rem 1.3rem;
+  background: var(--panel);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.btn.primary { background: var(--accent); color: #1b1206; font-weight: 600; }
+
+.boardwrap { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+/* Sized to 16:9 by fitBoard() in app.js. */
+.board {
+  position: relative;
+  background: var(--bg2);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.board canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; }
+.board.drawing { box-shadow: 0 0 0 0.25rem var(--accent); }
+.cursor {
+  position: absolute;
+  width: 1.4rem; height: 1.4rem;
+  margin: -0.7rem 0 0 -0.7rem;
+  border-radius: 50%;
+  border: 0.15rem solid #fff;
+  box-shadow: 0 0 0 0.12rem #000;
+  pointer-events: none;
+}
+.cursor.pen { background: currentColor; }
+.boardtip {
+  position: absolute; left: 50%; bottom: 1rem; transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.55); padding: 0.4rem 1rem; border-radius: 1rem;
+  font-size: 1rem; color: var(--muted); pointer-events: none;
+}
+.conn { font-size: 0.95rem; color: var(--muted); }
+
+/* ---------------------------------------------------------------- ask */
+
+#page-ask { display: flex; flex-direction: column; }
+#page-ask > * + * { margin-top: 1rem; }
+.chat {
+  flex: 1; min-height: 0;
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+  padding-right: 1rem;
+}
+.chat > * + * { margin-top: 0.9rem; }
+.msg {
+  max-width: 70%;
+  padding: 0.9rem 1.3rem;
+  border-radius: 1.1rem;
+  font-size: 1.35rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+.msg.me { align-self: flex-end; background: var(--accent); color: #1b1206; }
+.msg.bot { align-self: flex-start; background: var(--panel); }
+.msg.err { align-self: flex-start; background: #4a1d24; color: #ffd6dc; }
+.msg.wait { color: var(--muted); }
+
+.askbar { display: flex; }
+.askbar > * + * { margin-left: 0.8rem; }
+.askbar input {
+  flex: 1;
+  background: var(--panel);
+  border: 0;
+  border-radius: 0.8rem;
+  padding: 0.9rem 1.2rem;
+  font-size: 1.3rem;
+}
+
+/* ---------------------------------------------------------------- toast */
+
+.toast {
+  position: fixed; left: 50%; bottom: 2.5rem; transform: translateX(-50%);
+  background: rgba(20, 26, 42, 0.95);
+  padding: 0.9rem 1.6rem; border-radius: 1rem;
+  font-size: 1.2rem;
+}

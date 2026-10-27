@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TV Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <nav class="tabs">
+      <button class="tab" data-nav data-tab="home">Home</button>
+      <button class="tab" data-nav data-tab="draw">Draw</button>
+      <button class="tab" data-nav data-tab="ask">Ask Claude</button>
+    </nav>
+    <div class="topclock" id="topclock"></div>
+  </header>
+
+  <!-- Home -->
+  <main class="page" id="page-home">
+    <section class="hero">
+      <div class="greeting" id="greeting"></div>
+      <div class="bigclock" id="bigclock"></div>
+      <div class="date" id="date"></div>
+      <div class="weather" id="weather" hidden></div>
+    </section>
+
+    <h2 class="rowtitle">Watch</h2>
+    <div class="tiles" id="apptiles"></div>
+
+    <h2 class="rowtitle">Ours</h2>
+    <div class="tiles">
+      <button class="tile tile-draw" data-nav data-goto="draw">
+        <span class="tile-icon">✏️</span><span class="tile-name">Drawing board</span>
+      </button>
+      <button class="tile tile-ask" data-nav data-goto="ask">
+        <span class="tile-icon">✦</span><span class="tile-name">Ask Claude</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- Draw -->
+  <main class="page" id="page-draw" hidden>
+    <div class="drawbar">
+      <div class="swatches" id="swatches"></div>
+      <div class="sizes">
+        <button class="size" data-nav data-size="0.003">S</button>
+        <button class="size" data-nav data-size="0.006">M</button>
+        <button class="size" data-nav data-size="0.014">L</button>
+      </div>
+      <button class="btn" data-nav id="clearboard">Clear</button>
+      <div class="drawhint" id="drawhint"></div>
+    </div>
+    <div class="boardwrap">
+      <div class="board" id="boardbox" data-nav tabindex="0">
+        <canvas id="board"></canvas>
+        <div class="cursor" id="cursor" hidden></div>
+        <div class="boardtip" id="boardtip">Press Enter to draw with the arrow keys</div>
+      </div>
+    </div>
+    <div class="conn" id="conn"></div>
+  </main>
+
+  <!-- Ask -->
+  <main class="page" id="page-ask" hidden>
+    <div class="chat" id="chat">
+      <div class="msg bot">Hi! Ask me anything — recipes, facts, homework help, what to watch tonight.</div>
+    </div>
+    <form class="askbar" id="askform">
+      <input id="askinput" data-nav autocomplete="off" placeholder="Type a question and press Enter">
+      <button class="btn primary" data-nav type="submit">Ask</button>
+      <button class="btn" data-nav type="button" id="newchat">New chat</button>
+    </form>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="config.js"></script>
+  <script src="../shared/board.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
